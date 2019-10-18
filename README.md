@@ -10,7 +10,7 @@ Optimizes `.png`, `.jpg`, and `.jpeg` images  and enerates `.webp` images at the
 
 ```
 cd lambda-src
-npm ci --production
+docker run --rm -it lambci/lambda:build-nodejs10.x npm ci --production
 cd ..
 aws --region us-east-1 cloudformation package --s3-bucket $BUCKET_NAME --template-file lambdaedge-img-optimize.yaml --output-template-file .lambdaedge-img-optimize.yaml
 aws cloudformation deploy
