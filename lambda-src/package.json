@@ -9,8 +9,8 @@
     "url": "https://github.com/widdix/static-website-img-optimize/issues"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/widdix/static-website-img-optimize.git"
+    "type": "git",
+    "url": "https://github.com/widdix/static-website-img-optimize.git"
   },
   "scripts": {
     "test": "eslint ."
