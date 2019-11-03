@@ -1,12 +1,16 @@
 const sharp = require('sharp');
 const AWS = require('aws-sdk');
 
-const MAX_ALLOWED_BODY_SIZE = 1330000; // 1.33 MB
+const MAX_ALLOWED_BODY_SIZE = 1330000 / 8 * 6; // max 1.33 MB in base64
+
+function fallbackResponse(cf) {
+  return cf.request; // proxy to origin
+}
 
 function imageResponse(cf, optimized, type) {
   if (optimized.length > MAX_ALLOWED_BODY_SIZE) {
-    console.info(`[WARNING] ${cf.request} can not be optimized: body size > 1.33 MB`);
-    return cf.request; // proxy to origin
+    console.info(`[WARNING] ${cf.request.uri} can not be optimized: body size in base64 > 1.33 MB`);
+    return fallbackResponse(cf);
   }
   return {
     status: '200',
@@ -98,5 +102,5 @@ exports.handler = async function(event) {
       throw err;
     }
   }
-  return cf.request;
+  return fallbackResponse(cf);
 };
