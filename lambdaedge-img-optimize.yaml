@@ -85,9 +85,9 @@ Resources:
       Handler: 'lambda.handler'
       MemorySize: 1536
       Role: !GetAtt 'OriginRequestRole.Arn'
-      Runtime: 'nodejs10.x'
+      Runtime: 'nodejs12.x'
       Timeout: 30
-  OriginRequestVersionV3:
+  OriginRequestVersionV4:
     Type: 'AWS::Lambda::Version'
     Properties:
       FunctionName: !Ref OriginRequestFunction
@@ -102,4 +102,4 @@ Outputs:
     Value: !Sub '${AWS::StackName}'
   OriginRequestLambdaEdgeFunctionVersionARN:
     Description: 'Version ARN of Lambda@Edge origin request function.'
-    Value: !Ref OriginRequestVersionV3
+    Value: !Ref OriginRequestVersionV4
