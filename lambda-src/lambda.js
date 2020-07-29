@@ -30,12 +30,20 @@ function imageResponse(cf, optimized, type) {
   };
 }
 
+function extractBucketName(domainName) {
+  if (domainName.endsWith('.s3.amazonaws.com')) {
+    return domainName.split('.').slice(0, -3).join('.');
+  } else {
+    return domainName.split('.').slice(0, -4).join('.');
+  }
+}
+
 exports.handler = async function(event) {
   const s3 = new AWS.S3({apiVersion: '2006-03-01'});
   const cf = event.Records[0].cf;
   if ('s3' in cf.request.origin) {
     try {
-      const bucket = cf.request.origin.s3.domainName.split('.').slice(0, -3).join('.');
+      const bucket = extractBucketName(cf.request.origin.s3.domainName);
       const key = `${cf.request.origin.s3.path}${cf.request.uri.substr(1)}`;
       if (key.endsWith('.png')) {
         const raw = await s3.getObject({
